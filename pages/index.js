@@ -1,10 +1,19 @@
-import styled from 'styled-components'
+import VideoCards from "../components/home-page/VideoCards";
 
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
+import useFetchVideos from "../hooks/useFetchVideos";
 
-export default function Home() {
-  return <Title>My page</Title>
-}
+const Home = () => {
+  const { loading, videos, error } = useFetchVideos();
+
+  if (loading) {
+    return "loading...";
+  }
+
+  return (
+    <>
+      <VideoCards videos={videos} />
+    </>
+  );
+};
+
+export default Home;
