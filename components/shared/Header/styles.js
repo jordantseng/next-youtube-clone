@@ -35,7 +35,9 @@ export const RightHeader = styled.div`
 export const IconLink = styled(StyledLink)`
   color: black;
   margin-right: 8px;
+  display: flex;
   svg {
     cursor: pointer;
+    font-size: 30px;
   }
 `;
