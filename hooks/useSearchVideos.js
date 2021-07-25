@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from 'react';
 import {
   getVideos,
   getSearchedVideos,
   getChannels,
-} from "../services/youtubeService";
+} from '../services/youtubeService';
 
-const transformData = (searchedVideosData, videosData, channelsData) =>
+const combineData = (searchedVideosData, videosData, channelsData) =>
   searchedVideosData.items.map((searchedVideo) => {
     const { contentDetails, statistics } = videosData.items.find(
       (video) => searchedVideo.id.videoId === video.id
@@ -23,51 +23,89 @@ const transformData = (searchedVideosData, videosData, channelsData) =>
     };
   });
 
-const useSearchVideos = (defaultSearchTerm) => {
+const getUniqueVideoBy = (videos, key) => {
+  return [...new Map(videos.map((video) => [video[key], video])).values()];
+};
+
+const useSearchVideos = (searchTerm, pageNumber) => {
+  const [loading, setLoading] = useState(false);
   const [videos, setVideos] = useState([]);
-
-  const searchVideos = async (searchTerm) => {
-    if (!searchTerm) {
-      return;
-    }
-
-    const searchedVideosData = await getSearchedVideos({
-      q: searchTerm,
-      part: "snippet",
-      type: "video",
-      regionCode: "TW",
-      maxResults: 12,
-    });
-
-    const videoIds = [];
-    const channelIds = [];
-    searchedVideosData.items.forEach((searchedVideo) => {
-      const { videoId } = searchedVideo.id;
-      const { channelId } = searchedVideo.snippet;
-      videoIds.push(videoId);
-      channelIds.push(channelId);
-    });
-
-    const videosData = await getVideos({
-      part: "contentDetails,statistics",
-      id: videoIds.join(),
-    });
-
-    const channelsData = await getChannels({
-      part: "snippet",
-      id: channelIds.join(),
-    });
-
-    const result = transformData(searchedVideosData, videosData, channelsData);
-
-    setVideos(result);
-  };
+  const [error, setError] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const nextPageTokenRef = useRef('');
 
   useEffect(() => {
-    searchVideos(defaultSearchTerm);
-  }, [defaultSearchTerm]);
+    setVideos([]);
+    nextPageTokenRef.current = '';
+  }, [searchTerm]);
 
-  return [videos, searchVideos];
+  useEffect(() => {
+    const searchVideos = async (searchQuery) => {
+      if (!searchQuery) {
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const searchedVideosData = await getSearchedVideos({
+          q: searchQuery,
+          part: 'snippet',
+          type: 'video',
+          eventType: 'completed',
+          regionCode: 'TW',
+          maxResults: 12,
+          pageToken: nextPageTokenRef.current,
+        });
+
+        if (searchedVideosData.hasOwnProperty('nextPageToken')) {
+          nextPageTokenRef.current = searchedVideosData.nextPageToken;
+          setHasMore(true);
+        } else {
+          nextPageTokenRef.current = '';
+          setHasMore(false);
+        }
+
+        const videoIds = searchedVideosData.items
+          .map((item) => item.id.videoId)
+          .join();
+
+        const channelIds = searchedVideosData.items
+          .map((item) => item.snippet.channelId)
+          .join();
+
+        const videosData = await getVideos({
+          part: 'contentDetails,statistics',
+          id: videoIds,
+        });
+
+        const channelsData = await getChannels({
+          part: 'snippet',
+          id: channelIds,
+        });
+
+        const newVideos = combineData(
+          searchedVideosData,
+          videosData,
+          channelsData
+        );
+
+        // As search api sometimes would return same video => remove duplicated video
+        setVideos((prevVideos) =>
+          getUniqueVideoBy([...prevVideos, ...newVideos], 'etag')
+        );
+      } catch (error) {
+        console.log(error.message);
+        setError(error.message);
+      }
+
+      setLoading(false);
+    };
+
+    searchVideos(searchTerm);
+  }, [searchTerm, pageNumber]);
+
+  return { loading, videos, error, hasMore };
 };
 
 export default useSearchVideos;

@@ -1,6 +1,6 @@
-import React from "react";
-import SearchIcon from "@material-ui/icons/Search";
-import * as Styled from "./styles";
+import React from 'react';
+import SearchIcon from '@material-ui/icons/Search';
+import * as Styled from './styles';
 
 const Searchbox = ({ onSearchClick, searchInputRef }) => {
   return (

@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
-import useWindowDimenstion from "../hooks/useWindowDimenstion";
-import useSearchVideos from "../hooks/useSearchVideos";
-import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { useState, useEffect, useRef } from 'react';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { useRouter } from 'next/router';
 
-import Header from "../components/shared/Header";
-import Sidebar from "../components/shared/Sidebar";
+import useWindowDimension from '../hooks/useWindowDimension';
+
+import Header from '../components/shared/Header';
+import Sidebar from '../components/shared/Sidebar';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -15,15 +16,17 @@ const GlobalStyle = createGlobalStyle`
 
 const theme = {
   colors: {
-    primary: "#0070f3",
+    primary: '#0070f3',
   },
 };
 
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [videos, searchVideos] = useSearchVideos("");
-  const { width } = useWindowDimenstion();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const { width } = useWindowDimension();
   const searchInputRef = useRef();
+  const router = useRouter();
 
   useEffect(() => {
     if (width && width <= 900 && sidebarOpen) {
@@ -33,7 +36,8 @@ export default function App({ Component, pageProps }) {
 
   const onSearchClick = (e) => {
     e.preventDefault();
-    searchVideos(searchInputRef.current.value);
+    router.push('/search');
+    setSearchTerm(searchInputRef.current.value);
   };
 
   return (
@@ -42,14 +46,14 @@ export default function App({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
         <Header
           searchInputRef={searchInputRef}
-          onSearchClick={onSearchClick}
           setSidebarOpen={setSidebarOpen}
+          onSearchClick={onSearchClick}
         />
         <Layout>
           <Sidebar sidebarOpen={sidebarOpen} />
           <Component
+            searchTerm={searchTerm}
             sidebarOpen={sidebarOpen}
-            searchedVideos={videos}
             {...pageProps}
           />
         </Layout>
