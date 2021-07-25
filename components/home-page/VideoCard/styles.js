@@ -30,7 +30,7 @@ export const VideoText = styled.div`
 
 export const VideoTimeStamp = styled.div`
   position: absolute;
-  background: ${({ isLive }) => (isLive ? "#ff4e45" : "#333333")};
+  background: #333333;
   bottom: 10px;
   right: 10px;
   color: #fff;

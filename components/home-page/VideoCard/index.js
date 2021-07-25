@@ -8,7 +8,6 @@ import Avatar from "@material-ui/core/Avatar";
 import * as Styled from "./styles";
 
 const VideoCard = ({
-  isLive,
   title,
   views,
   timestamp,
@@ -16,6 +15,7 @@ const VideoCard = ({
   thumbnail,
   channel,
   channelThumbnail,
+  setLastVideo,
 }) => {
   const transformedViews =
     +views >= 10000 ? `${Math.trunc(+views / 10000)}萬次` : `${+views}次`;
@@ -25,26 +25,22 @@ const VideoCard = ({
     const now = dayjs(new Date());
     const hourDiff = now.diff(start, "hour");
 
-    if (hourDiff > 24) {
-      return `${now.diff(start, "day")}天前`;
+    if (hourDiff > 24 * 30 * 12) {
+      return `${now.diff(start, "year")}年前`;
     }
 
     if (hourDiff > 24 * 30) {
       return `${now.diff(start, "month")}月前`;
     }
 
-    if (hourDiff > 24 * 30 * 12) {
-      return `${now.diff(start, "year")}年前`;
+    if (hourDiff > 24) {
+      return `${now.diff(start, "day")}天前`;
     }
 
     return `${hourDiff}小時前`;
   };
 
   const transformedDuration = () => {
-    if (isLive) {
-      return "直播中";
-    }
-
     const totalSeconds = dayjs.duration(duration).asSeconds();
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds - hours * 3600) / 60);
@@ -56,22 +52,20 @@ const VideoCard = ({
   };
 
   return (
-    <div>
+    <div ref={setLastVideo}>
       <Styled.VideoThumbnail>
         <Image
           src={thumbnail.url}
-          alt=""
-          layout="responsive"
-          width="320"
-          height="180"
+          alt=''
+          layout='responsive'
+          width='320'
+          height='180'
         />
-        <Styled.VideoTimeStamp isLive={isLive}>
-          {transformedDuration()}
-        </Styled.VideoTimeStamp>
+        <Styled.VideoTimeStamp>{transformedDuration()}</Styled.VideoTimeStamp>
       </Styled.VideoThumbnail>
       <Styled.VideoInfo>
         <Avatar>
-          <Image src={channelThumbnail.url} alt="" layout="fill" />
+          <Image src={channelThumbnail.url} alt='' layout='fill' />
         </Avatar>
         <Styled.VideoText>
           <h4>{title}</h4>
