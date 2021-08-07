@@ -1,11 +1,13 @@
 import * as Styled from './styles';
 
-const SidebarRow = ({ Icon, title, selected, sidebarOpen }) => {
+const SidebarRow = ({ href, title, selected, sidebarOpen, Icon }) => {
   return (
-    <Styled.SidebarRow selected={selected} sidebarOpen={sidebarOpen}>
-      <Icon />
-      <h2>{title}</h2>
-    </Styled.SidebarRow>
+    <Styled.LogoLink href={href}>
+      <Styled.SidebarRow selected={selected} sidebarOpen={sidebarOpen}>
+        <Icon />
+        <span>{title}</span>
+      </Styled.SidebarRow>
+    </Styled.LogoLink>
   );
 };
 

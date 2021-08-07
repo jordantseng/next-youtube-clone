@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Sidebar = styled.div`
-  flex: ${({ sidebarOpen }) => (sidebarOpen ? 0.2 : 0.05)};
+  min-width: ${({ sidebarOpen }) => (sidebarOpen ? '240px' : '72px')};
 
   & > hr {
     height: 1px;

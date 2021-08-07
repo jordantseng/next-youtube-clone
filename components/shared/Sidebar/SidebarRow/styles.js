@@ -1,10 +1,17 @@
 import styled from 'styled-components';
+import Link from '../../../ui/Link';
+
+export const LogoLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+`;
 
 export const SidebarRow = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 20px;
+  padding: ${({ sidebarOpen }) =>
+    sidebarOpen ? '16px 8px 16px 20px' : '16px 0'};
   background-color: ${({ selected }) => selected && 'lightgray'};
   flex-direction: ${({ sidebarOpen }) => (sidebarOpen ? 'row' : 'column')};
 
@@ -13,13 +20,11 @@ export const SidebarRow = styled.div`
     font-size: large;
   }
 
-  & > h2 {
+  & > span {
     flex: 1;
-    margin-left: ${({ sidebarOpen }) => (sidebarOpen ? '20px' : 0)};
-    width: ${({ sidebarOpen }) => (sidebarOpen ? '120px' : '60px')};
+    margin-left: ${({ sidebarOpen }) => sidebarOpen && '20px'};
     text-align: ${({ sidebarOpen }) => !sidebarOpen && 'center'};
     font-size: 12px;
-    font-weight: ${({ selected }) => (selected ? 'bold' : '500')};
   }
 
   &:hover {

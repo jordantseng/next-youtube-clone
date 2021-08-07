@@ -22,10 +22,8 @@ const theme = {
 
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const { width } = useWindowDimension();
   const searchInputRef = useRef();
+  const { width } = useWindowDimension();
   const router = useRouter();
 
   useEffect(() => {
@@ -35,9 +33,12 @@ export default function App({ Component, pageProps }) {
   }, [width]);
 
   const onSearchClick = (e) => {
+    if (!searchInputRef.current.value) {
+      return;
+    }
+
     e.preventDefault();
-    router.push('/search');
-    setSearchTerm(searchInputRef.current.value);
+    router.push(`/search?q=${searchInputRef.current.value}`);
   };
 
   return (
@@ -50,12 +51,8 @@ export default function App({ Component, pageProps }) {
           onSearchClick={onSearchClick}
         />
         <Layout>
-          <Sidebar sidebarOpen={sidebarOpen} />
-          <Component
-            searchTerm={searchTerm}
-            sidebarOpen={sidebarOpen}
-            {...pageProps}
-          />
+          {width > 807 && <Sidebar sidebarOpen={sidebarOpen} />}
+          <Component sidebarOpen={sidebarOpen} {...pageProps} />
         </Layout>
       </ThemeProvider>
     </>

@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import StyledLink from "../StyledLink";
+import styled from 'styled-components';
+import Link from '../../ui/Link';
 
 export const Header = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ export const LeftHeader = styled.div`
   }
 `;
 
-export const LogoLink = styled(StyledLink)`
+export const LogoLink = styled(Link)`
   display: inline-block;
   margin-left: 20px;
   height: 20px;
@@ -32,7 +32,7 @@ export const RightHeader = styled.div`
   align-items: center;
 `;
 
-export const IconLink = styled(StyledLink)`
+export const IconLink = styled(Link)`
   color: black;
   margin-right: 8px;
   display: flex;

@@ -1,27 +1,27 @@
-import HomeIcon from "@material-ui/icons/Home";
-import WhatsotIcon from "@material-ui/icons/Whatshot";
-import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
-import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
-import OndemandVideoIcon from "@material-ui/icons/OndemandVideo";
-import WatchLaterIcon from "@material-ui/icons/WatchLater";
-import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import HomeIcon from '@material-ui/icons/Home';
+import WhatsotIcon from '@material-ui/icons/Whatshot';
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
+import VideoLibraryIcon from '@material-ui/icons/VideoLibrary';
+import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
+import WatchLaterIcon from '@material-ui/icons/WatchLater';
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
-import SidebarRow from "./SidebarRow/index";
+import SidebarRow from './SidebarRow/index';
 
-import * as Styled from "./styles";
+import * as Styled from './styles';
 
 const topSidebarItems = [
-  { title: "首頁", Icon: HomeIcon },
-  { title: "探索", Icon: WhatsotIcon },
-  { title: "訂閱內容", Icon: VideoLibraryIcon },
+  { title: '首頁', href: '/', Icon: HomeIcon },
+  { title: '探索', href: '/', Icon: WhatsotIcon },
+  { title: '訂閱內容', href: '/', Icon: VideoLibraryIcon },
 ];
 
 const bottomSidebarItems = [
-  { title: "媒體庫", Icon: SubscriptionsIcon },
-  { title: "觀看紀錄", Icon: VideoLibraryIcon },
-  { title: "你的影片", Icon: OndemandVideoIcon },
-  { title: "稍後觀看", Icon: WatchLaterIcon },
-  { title: "喜歡的影片", Icon: ThumbUpAltOutlinedIcon },
+  { title: '媒體庫', href: '/', Icon: SubscriptionsIcon },
+  { title: '觀看紀錄', href: '/', Icon: VideoLibraryIcon },
+  { title: '你的影片', href: '/', Icon: OndemandVideoIcon },
+  { title: '稍後觀看', href: '/', Icon: WatchLaterIcon },
+  { title: '喜歡的影片', href: '/', Icon: ThumbUpAltOutlinedIcon },
 ];
 
 const Sidebar = ({ sidebarOpen }) => {
@@ -31,6 +31,7 @@ const Sidebar = ({ sidebarOpen }) => {
         <SidebarRow
           key={item.title}
           title={item.title}
+          href={item.href}
           Icon={item.Icon}
           sidebarOpen={sidebarOpen}
         />
@@ -40,6 +41,7 @@ const Sidebar = ({ sidebarOpen }) => {
         <SidebarRow
           key={item.title}
           title={item.title}
+          href={item.href}
           Icon={item.Icon}
           sidebarOpen={sidebarOpen}
         />

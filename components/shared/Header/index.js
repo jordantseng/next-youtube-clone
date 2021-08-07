@@ -1,14 +1,14 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-import Avatar from "@material-ui/core/Avatar";
-import MenuIcon from "@material-ui/icons/Menu";
-import VideoCallIcon from "@material-ui/icons/VideoCall";
-import AppsIcon from "@material-ui/icons/Apps";
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import Avatar from '@material-ui/core/Avatar';
+import MenuIcon from '@material-ui/icons/Menu';
+import VideoCallIcon from '@material-ui/icons/VideoCall';
+import AppsIcon from '@material-ui/icons/Apps';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import Searchbox from "../Searchbox";
+import Searchbox from '../Searchbox';
 
-import * as Styled from "./styles";
+import * as Styled from './styles';
 
 const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
   return (
@@ -17,13 +17,13 @@ const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
         <MenuIcon
           onClick={() => setSidebarOpen((sidebarOpen) => !sidebarOpen)}
         />
-        <Styled.LogoLink href='/'>
+        <Styled.LogoLink href="/">
           <Image
-            src='/images/1024px-YouTube_Logo_2017.png'
-            alt='youtubeLogo'
-            layout='fixed'
-            width='90'
-            height='20'
+            src="/images/1024px-YouTube_Logo_2017.png"
+            alt="youtubeLogo"
+            layout="fixed"
+            width="90"
+            height="20"
           />
         </Styled.LogoLink>
       </Styled.LeftHeader>
@@ -32,16 +32,16 @@ const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
         onSearchClick={onSearchClick}
       />
       <Styled.RightHeader>
-        <Styled.IconLink href='/'>
+        <Styled.IconLink href="/">
           <VideoCallIcon />
         </Styled.IconLink>
-        <Styled.IconLink href='/'>
+        <Styled.IconLink href="/">
           <AppsIcon />
         </Styled.IconLink>
-        <Styled.IconLink href='/'>
+        <Styled.IconLink href="/">
           <NotificationsIcon />
         </Styled.IconLink>
-        <Styled.IconLink href='/'>
+        <Styled.IconLink href="/">
           <Avatar style={{ height: 30, width: 30 }} />
         </Styled.IconLink>
       </Styled.RightHeader>
