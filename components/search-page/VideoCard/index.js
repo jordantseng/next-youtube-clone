@@ -1,81 +1,61 @@
-import Image from "next/image";
-import * as dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
-dayjs.extend(duration);
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 
-import Avatar from "@material-ui/core/Avatar";
+import Avatar from '@material-ui/core/Avatar';
 
-import * as Styled from "./styles";
+import * as Styled from './styles';
+
+import {
+  transformDuration,
+  transformTimeStamp,
+  transformViews,
+} from '../../../utils';
 
 const VideoCard = ({
+  videoId,
   title,
-  views,
-  timestamp,
-  duration,
-  thumbnail,
+  viewCount,
+  videoTimeStamp,
+  videoDuration,
+  videoThumbnail,
   channel,
   channelThumbnail,
   description,
   setLastVideo,
 }) => {
-  const transformedViews =
-    +views >= 10000 ? `${Math.trunc(+views / 10000)}萬次` : `${+views}次`;
+  const router = useRouter();
 
-  const transformedTimeStamp = () => {
-    const start = dayjs(timestamp);
-    const now = dayjs(new Date());
-    const hourDiff = now.diff(start, "hour");
-
-    if (hourDiff > 24 * 30 * 12) {
-      return `${now.diff(start, "year")}年前`;
-    }
-
-    if (hourDiff > 24 * 30) {
-      return `${now.diff(start, "month")}月前`;
-    }
-
-    if (hourDiff > 24) {
-      return `${now.diff(start, "day")}天前`;
-    }
-
-    return `${hourDiff}小時前`;
-  };
-
-  const transformedDuration = () => {
-    const totalSeconds = dayjs.duration(duration).asSeconds();
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds - hours * 3600) / 60);
-    const seconds = Math.trunc(totalSeconds % 60);
-
-    return `${hours === 0 ? "" : hours + ":"}${
-      minutes < 10 ? "0" : ""
-    }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  const onVideoInfoClick = () => {
+    router.push(`/watch/${videoId}`);
   };
 
   return (
-    <Styled.VideoCard href='/' ref={setLastVideo}>
-      <Styled.VideoThumbnail>
+    <Styled.VideoCard ref={setLastVideo}>
+      <Styled.VideoThumbnail href={`/watch/${videoId}`}>
         <Image
-          src={thumbnail}
-          alt=''
-          layout='responsive'
-          width='320'
-          height='180'
+          src={videoThumbnail}
+          alt=""
+          layout="responsive"
+          width="320"
+          height="180"
         />
-        <Styled.VideoTimeStamp>{transformedDuration()}</Styled.VideoTimeStamp>
+        <Styled.VideoTimeStamp>
+          {transformDuration(videoDuration)}
+        </Styled.VideoTimeStamp>
       </Styled.VideoThumbnail>
-      <Styled.VideoInfo>
+      <Styled.VideoInfo onClick={onVideoInfoClick}>
         <h4>{title}</h4>
         <p>
-          觀看次數：{transformedViews} ・ {transformedTimeStamp()}
+          觀看次數：{transformViews(viewCount)} ・{' '}
+          {transformTimeStamp(videoTimeStamp)}
         </p>
         <Styled.VideoChannel>
-          <Avatar style={{ width: "30px", height: "30px" }}>
+          <Avatar style={{ width: '30px', height: '30px' }}>
             <Image
               src={channelThumbnail}
-              alt=''
-              layout='fill'
-              objectFit='cover'
+              alt=""
+              layout="fill"
+              objectFit="cover"
             />
           </Avatar>
           <p>{channel}</p>

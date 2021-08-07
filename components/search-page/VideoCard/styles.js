@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import Link from '../../ui/Link';
 
 export const VideoCard = styled.div`
   display: flex;
@@ -9,7 +10,7 @@ export const VideoCard = styled.div`
   }
 `;
 
-export const VideoThumbnail = styled.div`
+export const VideoThumbnail = styled(Link)`
   position: relative;
   flex: 1;
   max-width: 360px;
@@ -24,6 +25,7 @@ export const VideoThumbnail = styled.div`
 
 export const VideoInfo = styled.div`
   flex: 1;
+  cursor: pointer;
 
   & > h4 {
     width: 100%;
