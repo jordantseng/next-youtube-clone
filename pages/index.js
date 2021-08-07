@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import VideoCard from '../components/home-page/VideoCard';
-import Loader from '../components/shared/Loader';
 
-import useFetchVideos from '../hooks/useFetchVideos';
+import VideoCard from '../components/home-page/VideoCard';
+import Loader from '../components/ui/Loader';
+
+import useFetchPopularVideos from '../hooks/api/useFetchPopularVideos';
 import useOnScreen from '../hooks/useOnScreen';
 
 import * as Styled from './styles';
@@ -10,7 +11,7 @@ import * as Styled from './styles';
 const Home = () => {
   const [pageNumber, setPageNumber] = useState(1);
 
-  const { loading, videos, error, hasMore } = useFetchVideos(pageNumber);
+  const { loading, videos, error, hasMore } = useFetchPopularVideos(pageNumber);
   const [visible, setLastVideo] = useOnScreen();
 
   useEffect(() => {
@@ -29,11 +30,12 @@ const Home = () => {
               return (
                 <VideoCard
                   key={video.id}
+                  videoId={video.id}
                   title={video.snippet.title}
-                  views={video.statistics.viewCount}
-                  timestamp={video.snippet.publishedAt}
-                  duration={video.contentDetails.duration}
-                  thumbnail={video.snippet.thumbnails.medium}
+                  viewCount={video.statistics.viewCount}
+                  videoTimeStamp={video.snippet.publishedAt}
+                  videoDuration={video.contentDetails.duration}
+                  videoThumbnail={video.snippet.thumbnails.medium}
                   channel={video.channelDetails.snippet.title}
                   channelThumbnail={
                     video.channelDetails.snippet.thumbnails.default
@@ -45,11 +47,12 @@ const Home = () => {
             return (
               <VideoCard
                 key={video.id}
+                videoId={video.id}
                 title={video.snippet.title}
-                views={video.statistics.viewCount}
-                timestamp={video.snippet.publishedAt}
-                duration={video.contentDetails.duration}
-                thumbnail={video.snippet.thumbnails.medium}
+                viewCount={video.statistics.viewCount}
+                videoTimeStamp={video.snippet.publishedAt}
+                videoDuration={video.contentDetails.duration}
+                videoThumbnail={video.snippet.thumbnails.medium}
                 channel={video.channelDetails.snippet.title}
                 channelThumbnail={
                   video.channelDetails.snippet.thumbnails.default

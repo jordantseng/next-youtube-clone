@@ -1,4 +1,8 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
+export const VideoCardContainer = styled.div`
+  cursor: pointer;
+`;
 
 export const VideoThumbnail = styled.div`
   position: relative;
