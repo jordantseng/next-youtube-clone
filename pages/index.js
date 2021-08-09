@@ -8,10 +8,10 @@ import useOnScreen from '../hooks/useOnScreen';
 
 import * as Styled from './styles';
 
-const Home = () => {
+const Home = ({ sidebarOpen }) => {
   const [pageNumber, setPageNumber] = useState(1);
 
-  const { loading, videos, error, hasMore } = useFetchPopularVideos(pageNumber);
+  const [loading, videos, error, hasMore] = useFetchPopularVideos(pageNumber);
   const [visible, setLastVideo] = useOnScreen();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <>
-      <Styled.HomePageContainer>
+      <Styled.HomePageContainer sidebarOpen={sidebarOpen}>
         <Styled.VideoCards>
           {videos.map((video, index) => {
             const isLastVideo = videos.length === index + 1;

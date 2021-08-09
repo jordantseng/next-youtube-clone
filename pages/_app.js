@@ -1,8 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { useRouter } from 'next/router';
-
-import useWindowDimension from '../hooks/useWindowDimension';
 
 import Header from '../components/shared/Header';
 import Sidebar from '../components/shared/Sidebar';
@@ -23,14 +21,7 @@ const theme = {
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const searchInputRef = useRef();
-  const { width } = useWindowDimension();
   const router = useRouter();
-
-  useEffect(() => {
-    if (width && width <= 900 && sidebarOpen) {
-      setSidebarOpen(false);
-    }
-  }, [width]);
 
   const onSearchClick = (e) => {
     if (!searchInputRef.current.value) {
@@ -51,7 +42,7 @@ export default function App({ Component, pageProps }) {
           onSearchClick={onSearchClick}
         />
         <Layout>
-          {width > 807 && <Sidebar sidebarOpen={sidebarOpen} />}
+          <Sidebar sidebarOpen={sidebarOpen} />
           <Component sidebarOpen={sidebarOpen} {...pageProps} />
         </Layout>
       </ThemeProvider>

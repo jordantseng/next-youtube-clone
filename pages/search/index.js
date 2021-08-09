@@ -5,18 +5,16 @@ import { google } from 'googleapis';
 import VideoCard from '../../components/search-page/VideoCard';
 import Loader from '../../components/ui/Loader';
 
-import useSearchVideos from '../../hooks/api/useSearchVideos';
+import useFetchSearchedVideos from '../../hooks/api/useFetchSearchedVideos';
 import useOnScreen from '../../hooks/useOnScreen';
 
 import * as Styled from './styles';
 
-const SearchPage = ({ initVideosData }) => {
+const SearchPage = ({ initVideosData, sidebarOpen }) => {
   const router = useRouter();
   const { q: searchTerm } = router.query;
-  const { loading, videos, error, hasMore, setPageNumber } = useSearchVideos(
-    initVideosData,
-    searchTerm
-  );
+  const [loading, videos, error, hasMore, setPageNumber] =
+    useFetchSearchedVideos(initVideosData, searchTerm);
   const [visible, setLastVideo] = useOnScreen();
 
   useEffect(() => {
@@ -26,7 +24,7 @@ const SearchPage = ({ initVideosData }) => {
   }, [visible, hasMore]);
 
   return (
-    <Styled.SearchPageContainer>
+    <Styled.SearchPageContainer sidebarOpen={sidebarOpen}>
       <Styled.VideoCards>
         {videos.map((video, index) => {
           const isLastVideo = videos.length === index + 1;
