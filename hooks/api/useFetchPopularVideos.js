@@ -35,7 +35,7 @@ const useFetchPopularVideos = (pageNumber) => {
     fetchVideos();
   }, [pageNumber]);
 
-  return { loading, videos, error, hasMore };
+  return [loading, videos, error, hasMore];
 };
 
 export default useFetchPopularVideos;

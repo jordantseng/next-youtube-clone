@@ -7,17 +7,7 @@ import CommentsHeader from './CommentsHeader';
 import CommentCard from './CommentCard';
 import Loader from '../../ui/Loader';
 
-const Comments = ({ videoId }) => {
-  const { loading, comments, error, hasMore, setPageNumber } =
-    useFetchComments(videoId);
-  const [visible, setLastComment] = useOnScreen();
-
-  useEffect(() => {
-    if (visible && hasMore) {
-      setPageNumber((pageNumber) => pageNumber + 1);
-    }
-  }, [visible, hasMore]);
-
+const Comments = ({ loading, comments, setLastComment }) => {
   return (
     <>
       <CommentsHeader />

@@ -13,7 +13,7 @@ export const getPopularVideos = async (pageToken) => {
       part: 'contentDetails,snippet,statistics',
       chart: 'mostPopular',
       regionCode: 'TW',
-      maxResults: 12,
+      maxResults: 25,
       pageToken,
     },
   });
@@ -48,7 +48,7 @@ export const getSearchedVideos = async (searchQuery, pageToken) => {
       type: 'video',
       eventType: 'completed',
       regionCode: 'TW',
-      maxResults: 12,
+      maxResults: 25,
       pageToken,
     },
   });
@@ -100,7 +100,7 @@ export const getRecommendVideos = async (videoId, pageToken) => {
     params: {
       part: 'snippet',
       relatedToVideoId: videoId,
-      maxResults: 50,
+      maxResults: 12,
       type: 'video',
       pageToken,
     },

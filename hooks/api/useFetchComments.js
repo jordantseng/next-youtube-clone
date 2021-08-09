@@ -39,7 +39,7 @@ const useFetchComments = (videoId) => {
     fetchComments();
   }, [videoId, pageNumber]);
 
-  return { loading, comments, error, hasMore, setPageNumber };
+  return [loading, comments, error, hasMore, setPageNumber];
 };
 
 export default useFetchComments;

@@ -4,7 +4,10 @@ import { getSearchedVideos } from '../../services/youtubeService';
 
 import { getUniqueVideoBy } from '../../utils';
 
-const useSearchVideos = ({ initVideos, initNextPageToken }, searchTerm) => {
+const useFetchSearchedVideos = (
+  { initVideos, initNextPageToken },
+  searchTerm
+) => {
   const [loading, setLoading] = useState(false);
   const [videos, setVideos] = useState(initVideos);
   const [error, setError] = useState(null);
@@ -57,7 +60,7 @@ const useSearchVideos = ({ initVideos, initNextPageToken }, searchTerm) => {
     }
   }, [searchTerm, pageNumber]);
 
-  return { loading, videos, error, hasMore, setPageNumber };
+  return [loading, videos, error, hasMore, setPageNumber];
 };
 
-export default useSearchVideos;
+export default useFetchSearchedVideos;

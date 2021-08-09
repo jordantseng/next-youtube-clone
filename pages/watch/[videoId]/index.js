@@ -7,8 +7,9 @@ import Loader from '../../../components/ui/Loader';
 import Button from '../../../components/ui/Button';
 
 import useFetchRecommendVideos from '../../../hooks/api/useFetchRecommendVideos';
+import useFetchComments from '../../../hooks/api/useFetchComments';
 import useOnScreen from '../../../hooks/useOnScreen';
-import useWindowDimension from '../../../hooks/useWindowDimension';
+import useMediaQuery from '../../../hooks/useMediaQuery';
 
 import * as Styled from './styles';
 
@@ -23,20 +24,40 @@ const VideoPage = ({
   subscriberCount,
   channelThumbnail,
   videoDescription,
+  sidebarOpen,
 }) => {
-  const { loading, videos, error, hasMore, setPageNumber } =
-    useFetchRecommendVideos(videoId);
-  const [visible, setLastRecommendVideo] = useOnScreen();
-  const { width } = useWindowDimension();
+  const [
+    loadingRecommendVideos,
+    recommendVideos,
+    recommendVideosError,
+    hasMoreRecommendVideos,
+    setRecommendVideosPageNumber,
+  ] = useFetchRecommendVideos(videoId);
+  const [
+    loadingComments,
+    comments,
+    commentsError,
+    hasMoreComments,
+    setCommentsPageNumber,
+  ] = useFetchComments(videoId);
+  const [lastRecommendVideoVisible, setLastRecommendVideo] = useOnScreen();
+  const [lastCommentVisible, setLastComment] = useOnScreen();
+  const largeScreen = useMediaQuery('(min-width: 1000px)');
 
   useEffect(() => {
-    if (hasMore && visible) {
-      setPageNumber((page) => page + 1);
+    if (hasMoreRecommendVideos && lastRecommendVideoVisible) {
+      setRecommendVideosPageNumber((page) => page + 1);
     }
-  }, [hasMore, visible]);
+  }, [hasMoreRecommendVideos, lastRecommendVideoVisible]);
+
+  useEffect(() => {
+    if (lastCommentVisible && hasMoreComments) {
+      setCommentsPageNumber((pageNumber) => pageNumber + 1);
+    }
+  }, [lastCommentVisible, hasMoreComments]);
 
   return (
-    <Styled.VideoPageContainer>
+    <Styled.VideoPageContainer sidebarOpen={sidebarOpen}>
       <Styled.VideoContainer>
         <Video
           videoId={videoId}
@@ -50,26 +71,42 @@ const VideoPage = ({
           channelThumbnail={channelThumbnail}
           videoDescription={videoDescription}
         />
-        {width > 1000 && <Comments videoId={videoId} />}
+        {largeScreen && (
+          <Comments
+            loading={loadingComments}
+            comments={comments}
+            setLastComment={setLastComment}
+          />
+        )}
       </Styled.VideoContainer>
       <Styled.RecommendVideosContainer>
-        {width > 1000 ? (
+        {largeScreen ? (
           <RecommendVideos
-            videos={videos}
+            videos={recommendVideos}
             setLastRecommendVideo={setLastRecommendVideo}
           />
         ) : (
           <>
-            <RecommendVideos videos={videos} />
-            {!loading && (
-              <Button variant="outlined" color="primary" fullWidth>
+            <RecommendVideos videos={recommendVideos} />
+            {loadingRecommendVideos ? (
+              <Loader />
+            ) : (
+              <Button
+                variant="outlined"
+                color="primary"
+                fullWidth
+                onClick={() => setRecommendVideosPageNumber((page) => page + 1)}
+              >
                 顯示完整資訊
               </Button>
             )}
-            <Comments videoId={videoId} />
+            <Comments
+              loading={loadingComments}
+              comments={comments}
+              setLastComment={setLastComment}
+            />
           </>
         )}
-        {loading && <Loader />}
       </Styled.RecommendVideosContainer>
     </Styled.VideoPageContainer>
   );

@@ -8,6 +8,7 @@ const Button = ({ style, color, fullWidth, variant, children, onClick }) => {
           style={style}
           color={color}
           fullWidth={fullWidth}
+          onClick={onClick}
         >
           {children}
         </Styled.OutlinedButton>

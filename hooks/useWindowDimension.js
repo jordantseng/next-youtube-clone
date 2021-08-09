@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
@@ -13,11 +13,22 @@ const useWindowDimension = () => {
     width: 0,
     height: 0,
   });
+  const timerId = useRef();
+
+  const debounce = (cb, ms) => () => {
+    if (timerId.current) {
+      clearTimeout(timerId.current);
+    }
+
+    timerId.current = setTimeout(() => {
+      cb();
+    }, ms);
+  };
 
   useEffect(() => {
-    const handleResize = () => {
+    const handleResize = debounce(() => {
       setWindowDimensions(getWindowDimensions());
-    };
+    }, 100);
 
     window.addEventListener('resize', handleResize);
 

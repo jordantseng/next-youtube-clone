@@ -43,7 +43,7 @@ const useFetchRecommendVideos = (videoId) => {
     fetchRecommendVideos();
   }, [videoId, pageNumber]);
 
-  return { loading, videos, error, hasMore, setPageNumber };
+  return [loading, videos, error, hasMore, setPageNumber];
 };
 
 export default useFetchRecommendVideos;
