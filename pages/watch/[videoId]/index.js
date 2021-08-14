@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import styled from 'styled-components';
 
 import Video from '../../../components/video-page/Video';
 import Comments from '../../../components/video-page/Comments';
@@ -11,7 +12,41 @@ import useFetchComments from '../../../hooks/api/useFetchComments';
 import useOnScreen from '../../../hooks/useOnScreen';
 import useMediaQuery from '../../../hooks/useMediaQuery';
 
-import * as Styled from './styles';
+const VideoPageContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 40px 20px 20px 20px;
+  background-color: #f9f9f9;
+  margin-left: ${({ sidebarOpen }) => {
+    if (sidebarOpen === null) {
+      return '0px';
+    }
+    return sidebarOpen ? '240px' : '72px';
+  }};
+
+  @media only screen and (max-width: 1187px) {
+    margin-left: 0;
+  }
+`;
+
+const VideoContainer = styled.div`
+  flex: 1;
+  padding-right: 16px;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 0;
+  }
+`;
+
+const RecommendVideosContainer = styled.div`
+  width: 330px;
+
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+    padding-top: 16px;
+  }
+`;
 
 const VideoPage = ({
   videoId,
@@ -57,8 +92,8 @@ const VideoPage = ({
   }, [lastCommentVisible, hasMoreComments]);
 
   return (
-    <Styled.VideoPageContainer sidebarOpen={sidebarOpen}>
-      <Styled.VideoContainer>
+    <VideoPageContainer sidebarOpen={sidebarOpen}>
+      <VideoContainer>
         <Video
           videoId={videoId}
           title={title}
@@ -78,8 +113,8 @@ const VideoPage = ({
             setLastComment={setLastComment}
           />
         )}
-      </Styled.VideoContainer>
-      <Styled.RecommendVideosContainer>
+      </VideoContainer>
+      <RecommendVideosContainer>
         {largeScreen ? (
           <RecommendVideos
             videos={recommendVideos}
@@ -107,8 +142,8 @@ const VideoPage = ({
             />
           </>
         )}
-      </Styled.RecommendVideosContainer>
-    </Styled.VideoPageContainer>
+      </RecommendVideosContainer>
+    </VideoPageContainer>
   );
 };
 

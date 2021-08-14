@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 import VideoCard from '../components/home-page/VideoCard';
 import Loader from '../components/ui/Loader';
@@ -6,7 +7,27 @@ import Loader from '../components/ui/Loader';
 import useFetchPopularVideos from '../hooks/api/useFetchPopularVideos';
 import useOnScreen from '../hooks/useOnScreen';
 
-import * as Styled from './styles';
+const HomePageContainer = styled.div`
+  flex: 1;
+  background-color: #f9f9f9;
+  margin-left: ${({ sidebarOpen }) => {
+    if (sidebarOpen === null) {
+      return '0px';
+    }
+    return sidebarOpen ? '240px' : '72px';
+  }};
+
+  @media only screen and (max-width: 1187px) {
+    margin-left: 0;
+  }
+`;
+
+const VideoCards = styled.div`
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  padding: 24px 16px;
+`;
 
 const Home = ({ sidebarOpen }) => {
   const [pageNumber, setPageNumber] = useState(1);
@@ -22,8 +43,8 @@ const Home = ({ sidebarOpen }) => {
 
   return (
     <>
-      <Styled.HomePageContainer sidebarOpen={sidebarOpen}>
-        <Styled.VideoCards>
+      <HomePageContainer sidebarOpen={sidebarOpen}>
+        <VideoCards>
           {videos.map((video, index) => {
             const isLastVideo = videos.length === index + 1;
             if (isLastVideo) {
@@ -60,9 +81,9 @@ const Home = ({ sidebarOpen }) => {
               />
             );
           })}
-        </Styled.VideoCards>
+        </VideoCards>
         {loading && <Loader />}
-      </Styled.HomePageContainer>
+      </HomePageContainer>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import { google } from 'googleapis';
 
 import VideoCard from '../../components/search-page/VideoCard';
@@ -8,7 +9,25 @@ import Loader from '../../components/ui/Loader';
 import useFetchSearchedVideos from '../../hooks/api/useFetchSearchedVideos';
 import useOnScreen from '../../hooks/useOnScreen';
 
-import * as Styled from './styles';
+const SearchPageContainer = styled.div`
+  flex: 1;
+  display: flex;
+  background: #f9f9f9;
+  margin-left: ${({ sidebarOpen }) => {
+    if (sidebarOpen === null) {
+      return '0px';
+    }
+    return sidebarOpen ? '240px' : '72px';
+  }};
+
+  @media only screen and (max-width: 1187px) {
+    margin-left: 0;
+  }
+`;
+
+const VideoCards = styled.div`
+  padding: 24px 16px;
+`;
 
 const SearchPage = ({ initVideosData, sidebarOpen }) => {
   const router = useRouter();
@@ -24,8 +43,8 @@ const SearchPage = ({ initVideosData, sidebarOpen }) => {
   }, [visible, hasMore]);
 
   return (
-    <Styled.SearchPageContainer sidebarOpen={sidebarOpen}>
-      <Styled.VideoCards>
+    <SearchPageContainer sidebarOpen={sidebarOpen}>
+      <VideoCards>
         {videos.map((video, index) => {
           const isLastVideo = videos.length === index + 1;
           if (isLastVideo) {
@@ -61,8 +80,8 @@ const SearchPage = ({ initVideosData, sidebarOpen }) => {
           );
         })}
         {loading && <Loader />}
-      </Styled.VideoCards>
-    </Styled.SearchPageContainer>
+      </VideoCards>
+    </SearchPageContainer>
   );
 };
 
