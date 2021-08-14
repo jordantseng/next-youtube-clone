@@ -1,9 +1,11 @@
 import { useState, useRef } from 'react';
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { useRouter } from 'next/router';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import Header from '../components/shared/Header';
 import Sidebar from '../components/shared/Sidebar';
+
+import { UserProvider } from '../contexts/userContext';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -17,6 +19,10 @@ const theme = {
     primary: '#0070f3',
   },
 };
+
+const Layout = styled.div`
+  display: flex;
+`;
 
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -36,21 +42,18 @@ export default function App({ Component, pageProps }) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <Header
-          searchInputRef={searchInputRef}
-          setSidebarOpen={setSidebarOpen}
-          onSearchClick={onSearchClick}
-        />
-        <Layout>
-          <Sidebar sidebarOpen={sidebarOpen} />
-          <Component sidebarOpen={sidebarOpen} {...pageProps} />
-        </Layout>
+        <UserProvider>
+          <Header
+            searchInputRef={searchInputRef}
+            setSidebarOpen={setSidebarOpen}
+            onSearchClick={onSearchClick}
+          />
+          <Layout>
+            <Sidebar sidebarOpen={sidebarOpen} />
+            <Component sidebarOpen={sidebarOpen} {...pageProps} />
+          </Layout>
+        </UserProvider>
       </ThemeProvider>
     </>
   );
 }
-
-// TODO: try to make it more clean
-const Layout = styled.div`
-  display: flex;
-`;

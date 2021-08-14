@@ -16,7 +16,7 @@ import {
   transformTimeStamp,
   transformViews,
   transformSubscribers,
-} from '../../../utils';
+} from '../../../lib/utils';
 
 const Video = ({
   videoId,

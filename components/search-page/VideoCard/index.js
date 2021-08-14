@@ -9,7 +9,7 @@ import {
   transformDuration,
   transformTimeStamp,
   transformViews,
-} from '../../../utils';
+} from '../../../lib/utils';
 
 const VideoCard = ({
   videoId,

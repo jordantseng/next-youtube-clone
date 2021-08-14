@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import HomeIcon from '@material-ui/icons/Home';
 import WhatsotIcon from '@material-ui/icons/Whatshot';
 import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
@@ -7,6 +9,8 @@ import WatchLaterIcon from '@material-ui/icons/WatchLater';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 
 import SidebarRow from './SidebarRow/index';
+
+import UserContext from '../../../contexts/userContext';
 
 import * as Styled from './styles';
 
@@ -25,8 +29,10 @@ const bottomSidebarItems = [
 ];
 
 const Sidebar = ({ sidebarOpen }) => {
+  const { user } = useContext(UserContext);
+
   return (
-    <Styled.Sidebar sidebarOpen={sidebarOpen}>
+    <Styled.SidebarContainer sidebarOpen={sidebarOpen}>
       {topSidebarItems.map((item) => (
         <SidebarRow
           key={item.title}
@@ -37,17 +43,21 @@ const Sidebar = ({ sidebarOpen }) => {
         />
       ))}
       <hr />
-      {bottomSidebarItems.map((item) => (
-        <SidebarRow
-          key={item.title}
-          title={item.title}
-          href={item.href}
-          Icon={item.Icon}
-          sidebarOpen={sidebarOpen}
-        />
-      ))}
-      <hr />
-    </Styled.Sidebar>
+      {!user && (
+        <>
+          {bottomSidebarItems.map((item) => (
+            <SidebarRow
+              key={item.title}
+              title={item.title}
+              href={item.href}
+              Icon={item.Icon}
+              sidebarOpen={sidebarOpen}
+            />
+          ))}
+          <hr />
+        </>
+      )}
+    </Styled.SidebarContainer>
   );
 };
 

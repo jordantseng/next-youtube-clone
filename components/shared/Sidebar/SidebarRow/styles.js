@@ -14,6 +14,7 @@ export const SidebarRow = styled.div`
     sidebarOpen ? '16px 8px 16px 20px' : '16px 0'};
   background-color: ${({ selected }) => selected && 'lightgray'};
   flex-direction: ${({ sidebarOpen }) => (sidebarOpen ? 'row' : 'column')};
+  cursor: pointer;
 
   sidebarOpen & > svg {
     color: ${({ selected }) => (selected ? 'red' : '#606060')};
@@ -29,7 +30,6 @@ export const SidebarRow = styled.div`
 
   &:hover {
     background-color: lightgray;
-    cursor: pointer;
 
     svg {
       color: red;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Sidebar = styled.div`
+export const SidebarContainer = styled.div`
   position: fixed;
   top: 72px;
   height: 100vh;

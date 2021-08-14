@@ -6,7 +6,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
 import * as Styled from './styles';
 
-import { transformTimeStamp } from '../../../../utils';
+import { transformTimeStamp } from '../../../../lib/utils';
 
 const CommentCard = ({
   authorImage,

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { getRecommendVideos } from '../../services/youtubeService';
 
-import { getUniqueVideoBy } from '../../utils';
+import { getUniqueVideoBy } from '../../lib/utils';
 
 const useFetchRecommendVideos = (videoId) => {
   const [loading, setLoading] = useState(false);

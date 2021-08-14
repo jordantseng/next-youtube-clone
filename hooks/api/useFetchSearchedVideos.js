@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import { getSearchedVideos } from '../../services/youtubeService';
 
-import { getUniqueVideoBy } from '../../utils';
+import { getUniqueVideoBy } from '../../lib/utils';
 
 const useFetchSearchedVideos = (
   { initVideos, initNextPageToken },

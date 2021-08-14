@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react';
 import Image from 'next/image';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -7,10 +8,17 @@ import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 import Searchbox from '../Searchbox';
+import Login from '../../ui/Login';
+import Menu from '../Menu';
+
+import UserContext from '../../../contexts/userContext';
 
 import * as Styled from './styles';
 
 const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
+
   return (
     <Styled.Header>
       <Styled.LeftHeader>
@@ -32,18 +40,26 @@ const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
         onSearchClick={onSearchClick}
       />
       <Styled.RightHeader>
-        <Styled.IconLink href="/">
-          <VideoCallIcon />
-        </Styled.IconLink>
-        <Styled.IconLink href="/">
-          <AppsIcon />
-        </Styled.IconLink>
-        <Styled.IconLink href="/">
-          <NotificationsIcon />
-        </Styled.IconLink>
-        <Styled.IconLink href="/">
-          <Avatar style={{ height: 30, width: 30 }} />
-        </Styled.IconLink>
+        {user && (
+          <>
+            <Styled.IconLink href="/">
+              <VideoCallIcon />
+            </Styled.IconLink>
+            <Styled.IconLink href="/">
+              <AppsIcon />
+            </Styled.IconLink>
+            <Styled.IconLink href="/">
+              <NotificationsIcon />
+            </Styled.IconLink>
+            <Avatar
+              style={{ height: 30, width: 30, cursor: 'pointer' }}
+              src={user.imageUrl}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            />
+          </>
+        )}
+        {!user && <Login />}
+        {isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}
       </Styled.RightHeader>
     </Styled.Header>
   );
