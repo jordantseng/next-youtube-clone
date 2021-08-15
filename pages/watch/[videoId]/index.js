@@ -160,7 +160,7 @@ export const getStaticProps = async (context) => {
 
   const { data: videoData } = await google.youtube('v3').videos.list({
     id: videoId,
-    key: process.env.YOUTUBE_KEY,
+    key: process.env.NEXT_PUBLIC_YOUTUBE_KEY,
     part: 'snippet,contentDetails,statistics',
   });
 
@@ -168,7 +168,7 @@ export const getStaticProps = async (context) => {
 
   const { data: channelData } = await google.youtube('v3').channels.list({
     part: 'snippet,statistics',
-    key: process.env.YOUTUBE_KEY,
+    key: process.env.NEXT_PUBLIC_YOUTUBE_KEY,
     id: video.snippet.channelId,
   });
 

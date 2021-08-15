@@ -43,7 +43,7 @@ const Sidebar = ({ sidebarOpen }) => {
         />
       ))}
       <hr />
-      {!user && (
+      {user && (
         <>
           {bottomSidebarItems.map((item) => (
             <SidebarRow

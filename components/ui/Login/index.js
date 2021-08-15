@@ -28,7 +28,7 @@ const Login = () => {
   const { signIn, loaded } = useGoogleLogin({
     onSuccess,
     onFailure,
-    clientId: process.env.CLIENT_ID,
+    clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
     cookiePolicy: 'single_host_origin',
     isSignedIn: true,
   });

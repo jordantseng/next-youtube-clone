@@ -90,7 +90,7 @@ const SearchPage = ({ initVideosData, sidebarOpen }) => {
 export const getServerSideProps = async (context) => {
   const searchedVideosData = await google.youtube('v3').search.list({
     q: context.query.q,
-    key: process.env.YOUTUBE_KEY,
+    key: process.env.NEXT_PUBLIC_YOUTUBE_KEY,
     part: 'snippet',
     type: 'video',
     eventType: 'completed',
@@ -107,13 +107,13 @@ export const getServerSideProps = async (context) => {
     .join();
 
   const videosData = await google.youtube('v3').videos.list({
-    key: process.env.YOUTUBE_KEY,
+    key: process.env.NEXT_PUBLIC_YOUTUBE_KEY,
     part: 'contentDetails,statistics',
     id: videoIds,
   });
 
   const channelsData = await google.youtube('v3').channels.list({
-    key: process.env.YOUTUBE_KEY,
+    key: process.env.NEXT_PUBLIC_YOUTUBE_KEY,
     part: 'snippet',
     id: channelIds,
   });

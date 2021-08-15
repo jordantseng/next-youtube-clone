@@ -26,7 +26,7 @@ const Menu = ({ setIsMenuOpen }) => {
   };
 
   const { signOut } = useGoogleLogout({
-    clientId: process.env.CLIENT_ID,
+    clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
     onLogoutSuccess,
     onFailure,
   });
@@ -35,10 +35,11 @@ const Menu = ({ setIsMenuOpen }) => {
     <Styled.MenuContainer>
       <Styled.MenuHeader>
         <Avatar
+          src={user?.imageUrl}
           style={{ width: '40px', height: '40px', marginRight: '16px' }}
         />
         <div>
-          <b>{user.name}</b>
+          <b>{user?.name}</b>
           <Link
             style={{
               display: 'block',
