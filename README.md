@@ -42,12 +42,13 @@ Video details page
 - Get video comments
 
 #### Optimization
-- Infinite scrolling by using intersection observer
+- Infinite scrolling using intersection observer
+- Image optimization using Image component provided by Next.js
 
 #### Obstacles
 
 #### TODOs
-- [ ] Loading skeleton
+- [x] Loading skeleton
 - [ ] Error handling
 - [ ] Implement stlyed-components theming
 - [ ] Dark / bright mode 
