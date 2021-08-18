@@ -1,9 +1,5 @@
-import { useState, useRef } from 'react';
-import { useRouter } from 'next/router';
-import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
-
-import Header from '../components/shared/Header';
-import Sidebar from '../components/shared/Sidebar';
+import { useState } from 'react';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import { UserProvider } from '../contexts/userContext';
 
@@ -20,38 +16,19 @@ const theme = {
   },
 };
 
-const Layout = styled.div`
-  display: flex;
-`;
-
 export default function App({ Component, pageProps }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const searchInputRef = useRef();
-  const router = useRouter();
-
-  const onSearchClick = (e) => {
-    if (!searchInputRef.current.value) {
-      return;
-    }
-
-    e.preventDefault();
-    router.push(`/search?q=${searchInputRef.current.value}`);
-  };
 
   return (
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <UserProvider>
-          <Header
-            searchInputRef={searchInputRef}
+          <Component
             setSidebarOpen={setSidebarOpen}
-            onSearchClick={onSearchClick}
+            sidebarOpen={sidebarOpen}
+            {...pageProps}
           />
-          <Layout>
-            <Sidebar sidebarOpen={sidebarOpen} />
-            <Component sidebarOpen={sidebarOpen} {...pageProps} />
-          </Layout>
         </UserProvider>
       </ThemeProvider>
     </>

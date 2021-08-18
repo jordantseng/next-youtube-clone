@@ -16,6 +16,7 @@ const Login = () => {
 
   const onSuccess = (res) => {
     setUser(res.profileObj);
+    localStorage.setItem('user', JSON.stringify(res.profileObj));
     localStorage.setItem('authToken', res.tokenObj.access_token);
 
     setRefreshTokenTimer(res);

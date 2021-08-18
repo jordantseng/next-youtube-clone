@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
+import Header from '../../../components/shared/Header';
+import Sidebar from '../../../components/shared/Sidebar';
 import Video from '../../../components/video-page/Video';
 import Comments from '../../../components/video-page/Comments';
 import RecommendVideos from '../../../components/video-page/RecommendVideos';
@@ -12,7 +14,11 @@ import useFetchComments from '../../../hooks/api/useFetchComments';
 import useOnScreen from '../../../hooks/useOnScreen';
 import useMediaQuery from '../../../hooks/useMediaQuery';
 
-const VideoPageContainer = styled.div`
+const Container = styled.div`
+  display: flex;
+`;
+
+const Primary = styled.div`
   display: flex;
   width: 100%;
   flex-wrap: wrap;
@@ -59,6 +65,7 @@ const VideoPage = ({
   subscriberCount,
   channelThumbnail,
   videoDescription,
+  setSidebarOpen,
   sidebarOpen,
 }) => {
   const [
@@ -92,58 +99,66 @@ const VideoPage = ({
   }, [lastCommentVisible, hasMoreComments]);
 
   return (
-    <VideoPageContainer sidebarOpen={sidebarOpen}>
-      <VideoContainer>
-        <Video
-          videoId={videoId}
-          title={title}
-          viewCount={viewCount}
-          videoTimeStamp={videoTimeStamp}
-          likeCount={likeCount}
-          dislikeCount={dislikeCount}
-          channel={channel}
-          subscriberCount={subscriberCount}
-          channelThumbnail={channelThumbnail}
-          videoDescription={videoDescription}
-        />
-        {largeScreen && (
-          <Comments
-            loading={loadingComments}
-            comments={comments}
-            setLastComment={setLastComment}
-          />
-        )}
-      </VideoContainer>
-      <RecommendVideosContainer>
-        {largeScreen ? (
-          <RecommendVideos
-            videos={recommendVideos}
-            setLastRecommendVideo={setLastRecommendVideo}
-          />
-        ) : (
-          <>
-            <RecommendVideos videos={recommendVideos} />
-            {loadingRecommendVideos ? (
-              <Loader />
-            ) : (
-              <Button
-                variant="outlined"
-                color="primary"
-                fullWidth
-                onClick={() => setRecommendVideosPageNumber((page) => page + 1)}
-              >
-                顯示完整資訊
-              </Button>
-            )}
-            <Comments
-              loading={loadingComments}
-              comments={comments}
-              setLastComment={setLastComment}
+    <>
+      <Header setSidebarOpen={setSidebarOpen} />
+      <Container>
+        <Sidebar sidebarOpen={sidebarOpen} />
+        <Primary sidebarOpen={sidebarOpen}>
+          <VideoContainer>
+            <Video
+              videoId={videoId}
+              title={title}
+              viewCount={viewCount}
+              videoTimeStamp={videoTimeStamp}
+              likeCount={likeCount}
+              dislikeCount={dislikeCount}
+              channel={channel}
+              subscriberCount={subscriberCount}
+              channelThumbnail={channelThumbnail}
+              videoDescription={videoDescription}
             />
-          </>
-        )}
-      </RecommendVideosContainer>
-    </VideoPageContainer>
+            {largeScreen && (
+              <Comments
+                loading={loadingComments}
+                comments={comments}
+                setLastComment={setLastComment}
+              />
+            )}
+          </VideoContainer>
+          <RecommendVideosContainer>
+            {largeScreen ? (
+              <RecommendVideos
+                videos={recommendVideos}
+                setLastRecommendVideo={setLastRecommendVideo}
+              />
+            ) : (
+              <>
+                <RecommendVideos videos={recommendVideos} />
+                {loadingRecommendVideos ? (
+                  <Loader />
+                ) : (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    onClick={() =>
+                      setRecommendVideosPageNumber((page) => page + 1)
+                    }
+                  >
+                    顯示完整資訊
+                  </Button>
+                )}
+                <Comments
+                  loading={loadingComments}
+                  comments={comments}
+                  setLastComment={setLastComment}
+                />
+              </>
+            )}
+          </RecommendVideosContainer>
+        </Primary>
+      </Container>
+    </>
   );
 };
 

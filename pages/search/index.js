@@ -3,13 +3,19 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { google } from 'googleapis';
 
+import Header from '../../components/shared/Header';
+import Sidebar from '../../components/shared/Sidebar';
 import VideoCard from '../../components/search-page/VideoCard';
 import Loader from '../../components/ui/Loader';
 
 import useFetchSearchedVideos from '../../hooks/api/useFetchSearchedVideos';
 import useOnScreen from '../../hooks/useOnScreen';
 
-const SearchPageContainer = styled.div`
+const Container = styled.div`
+  display: flex;
+`;
+
+const Primary = styled.div`
   flex: 1;
   display: flex;
   background: #f9f9f9;
@@ -29,7 +35,7 @@ const VideoCards = styled.div`
   padding: 24px 16px;
 `;
 
-const SearchPage = ({ initVideosData, sidebarOpen }) => {
+const SearchPage = ({ initVideosData, sidebarOpen, setSidebarOpen }) => {
   const router = useRouter();
   const { q: searchTerm } = router.query;
   const [loading, videos, error, hasMore, setPageNumber] =
@@ -43,45 +49,53 @@ const SearchPage = ({ initVideosData, sidebarOpen }) => {
   }, [visible, hasMore]);
 
   return (
-    <SearchPageContainer sidebarOpen={sidebarOpen}>
-      <VideoCards>
-        {videos.map((video, index) => {
-          const isLastVideo = videos.length === index + 1;
-          if (isLastVideo) {
-            return (
-              <VideoCard
-                key={video.id.videoId}
-                videoId={video.id.videoId}
-                title={video.snippet.title}
-                viewCount={video.statistics.viewCount}
-                videoTimeStamp={video.snippet.publishedAt}
-                videoDuration={video.contentDetails.duration}
-                videoThumbnail={video.snippet.thumbnails.medium.url}
-                channel={video.channelDetails.title}
-                channelThumbnail={video.channelDetails.thumbnails.default.url}
-                description={video.snippet.description}
-                setLastVideo={setLastVideo}
-              />
-            );
-          }
-          return (
-            <VideoCard
-              key={video.id.videoId}
-              videoId={video.id.videoId}
-              title={video.snippet.title}
-              viewCount={video.statistics.viewCount}
-              videoTimeStamp={video.snippet.publishedAt}
-              videoDuration={video.contentDetails.duration}
-              videoThumbnail={video.snippet.thumbnails.medium.url}
-              channel={video.channelDetails.title}
-              channelThumbnail={video.channelDetails.thumbnails.default.url}
-              description={video.snippet.description}
-            />
-          );
-        })}
-        {loading && <Loader />}
-      </VideoCards>
-    </SearchPageContainer>
+    <>
+      <Header setSidebarOpen={setSidebarOpen} />
+      <Container>
+        <Sidebar sidebarOpen={sidebarOpen} />
+        <Primary sidebarOpen={sidebarOpen}>
+          <VideoCards>
+            {videos.map((video, index) => {
+              const isLastVideo = videos.length === index + 1;
+              if (isLastVideo) {
+                return (
+                  <VideoCard
+                    key={video.id.videoId}
+                    videoId={video.id.videoId}
+                    title={video.snippet.title}
+                    viewCount={video.statistics.viewCount}
+                    videoTimeStamp={video.snippet.publishedAt}
+                    videoDuration={video.contentDetails.duration}
+                    videoThumbnail={video.snippet.thumbnails.medium.url}
+                    channel={video.channelDetails.title}
+                    channelThumbnail={
+                      video.channelDetails.thumbnails.default.url
+                    }
+                    description={video.snippet.description}
+                    setLastVideo={setLastVideo}
+                  />
+                );
+              }
+              return (
+                <VideoCard
+                  key={video.id.videoId}
+                  videoId={video.id.videoId}
+                  title={video.snippet.title}
+                  viewCount={video.statistics.viewCount}
+                  videoTimeStamp={video.snippet.publishedAt}
+                  videoDuration={video.contentDetails.duration}
+                  videoThumbnail={video.snippet.thumbnails.medium.url}
+                  channel={video.channelDetails.title}
+                  channelThumbnail={video.channelDetails.thumbnails.default.url}
+                  description={video.snippet.description}
+                />
+              );
+            })}
+            {loading && <Loader />}
+          </VideoCards>
+        </Primary>
+      </Container>
+    </>
   );
 };
 

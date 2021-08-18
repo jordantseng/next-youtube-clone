@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -7,17 +8,29 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import AppsIcon from '@material-ui/icons/Apps';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
+import Menu from '../Menu';
 import Searchbox from '../Searchbox';
 import Login from '../../ui/Login';
-import Menu from '../Menu';
+import SkeletonsElement from '../../ui/Skeletons/SkeletonsElement';
 
 import UserContext from '../../../contexts/userContext';
 
 import * as Styled from './styles';
 
-const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
+const Header = ({ loadingPopularVideos, setSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const searchInputRef = useRef();
   const { user } = useContext(UserContext);
+  const router = useRouter();
+
+  const onSearchClick = (e) => {
+    if (!searchInputRef.current.value) {
+      return;
+    }
+
+    e.preventDefault();
+    router.push(`/search?q=${searchInputRef.current.value}`);
+  };
 
   return (
     <Styled.Header>
@@ -40,26 +53,40 @@ const Header = ({ onSearchClick, setSidebarOpen, searchInputRef }) => {
         onSearchClick={onSearchClick}
       />
       <Styled.RightHeader>
-        {user && (
+        {loadingPopularVideos ? (
+          Array(4)
+            .fill(null)
+            .map((_, index) => (
+              <div style={{ marginRight: index !== 3 && 8 }} key={index}>
+                <SkeletonsElement type="avatar" width="30px" height="30px" />
+              </div>
+            ))
+        ) : (
           <>
-            <Styled.IconLink href="/">
-              <VideoCallIcon />
-            </Styled.IconLink>
-            <Styled.IconLink href="/">
-              <AppsIcon />
-            </Styled.IconLink>
-            <Styled.IconLink href="/">
-              <NotificationsIcon />
-            </Styled.IconLink>
-            <Avatar
-              style={{ height: 30, width: 30, cursor: 'pointer' }}
-              src={user.imageUrl}
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            />
+            {user && (
+              <>
+                <Styled.IconLink href="/">
+                  <VideoCallIcon />
+                </Styled.IconLink>
+                <Styled.IconLink href="/">
+                  <AppsIcon />
+                </Styled.IconLink>
+                <Styled.IconLink href="/">
+                  <NotificationsIcon />
+                </Styled.IconLink>
+                <Avatar
+                  style={{ height: 30, width: 30, cursor: 'pointer' }}
+                  src={user.imageUrl}
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                />
+              </>
+            )}
+            <div style={{ display: user ? 'none' : 'block' }}>
+              <Login />
+            </div>
+            {isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}
           </>
         )}
-        {!user && <Login />}
-        {isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}
       </Styled.RightHeader>
     </Styled.Header>
   );

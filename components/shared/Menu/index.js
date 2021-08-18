@@ -17,6 +17,7 @@ const Menu = ({ setIsMenuOpen }) => {
 
   const onLogoutSuccess = (res) => {
     setUser(null);
+    localStorage.removeItem('user');
     localStorage.removeItem('authToken');
     setIsMenuOpen((isOpen) => !isOpen);
   };
