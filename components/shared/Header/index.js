@@ -1,5 +1,4 @@
-import { useState, useRef, useContext } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useContext } from 'react';
 import Image from 'next/image';
 
 import Avatar from '@material-ui/core/Avatar';
@@ -19,18 +18,7 @@ import * as Styled from './styles';
 
 const Header = ({ loadingPopularVideos, setSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const searchInputRef = useRef();
   const { user } = useContext(UserContext);
-  const router = useRouter();
-
-  const onSearchClick = (e) => {
-    if (!searchInputRef.current.value) {
-      return;
-    }
-
-    e.preventDefault();
-    router.push(`/search?q=${searchInputRef.current.value}`);
-  };
 
   return (
     <Styled.Header>
@@ -48,10 +36,9 @@ const Header = ({ loadingPopularVideos, setSidebarOpen }) => {
           />
         </Styled.LogoLink>
       </Styled.LeftHeader>
-      <Searchbox
-        searchInputRef={searchInputRef}
-        onSearchClick={onSearchClick}
-      />
+      <Styled.SearchboxContainer>
+        <Searchbox />
+      </Styled.SearchboxContainer>
       <Styled.RightHeader>
         {loadingPopularVideos ? (
           Array(4)

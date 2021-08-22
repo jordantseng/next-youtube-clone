@@ -21,6 +21,14 @@ export const LeftHeader = styled.div`
   }
 `;
 
+export const SearchboxContainer = styled.div`
+  width: 40%;
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+`;
+
 export const LogoLink = styled(Link)`
   display: inline-block;
   margin-left: 20px;

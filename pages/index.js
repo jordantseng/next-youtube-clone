@@ -36,7 +36,7 @@ const VideoCards = styled.div`
   padding: 24px 16px;
 `;
 
-const Home = ({ sidebarOpen, setSidebarOpen }) => {
+const HomePage = ({ sidebarOpen, setSidebarOpen }) => {
   const [pageNumber, setPageNumber] = useState(1);
 
   const [loading, videos, error, hasMore] = useFetchPopularVideos(pageNumber);
@@ -47,8 +47,6 @@ const Home = ({ sidebarOpen, setSidebarOpen }) => {
       setPageNumber((page) => page + 1);
     }
   }, [visible, hasMore]);
-
-  console.log('videos', videos);
 
   return (
     <>
@@ -94,7 +92,6 @@ const Home = ({ sidebarOpen, setSidebarOpen }) => {
               );
             })}
             {loading &&
-              videos.length === 0 &&
               Array(9)
                 .fill(null)
                 .map((_, index) => <VideoCardSkeleton key={index} />)}
@@ -106,4 +103,4 @@ const Home = ({ sidebarOpen, setSidebarOpen }) => {
   );
 };
 
-export default Home;
+export default HomePage;
