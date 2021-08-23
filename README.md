@@ -26,10 +26,15 @@ Video details page
 
 <img width="1920" alt="Screen Shot 2021-08-15 at 4 38 52 PM" src="https://user-images.githubusercontent.com/53250186/129472775-4292f65b-697b-481e-bb7c-4cecc94faeef.png">
 
+---
+404 page
+
+<img width="1920" alt="Screen Shot 2021-08-23 at 11 21 11 PM" src="https://user-images.githubusercontent.com/53250186/130473313-932b42fa-a9c2-4023-99dd-1407b2fcbe54.png">
 
 ## Techstack
 - Next.js
 - styled-components
+- Material UI Icons
 - axios
 
 ## Features
