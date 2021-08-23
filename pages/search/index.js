@@ -7,6 +7,7 @@ import Header from '../../components/shared/Header';
 import Sidebar from '../../components/shared/Sidebar';
 import VideoCard from '../../components/search-page/VideoCard';
 import Loader from '../../components/ui/Loader';
+import NoResults from '../../components/search-page/NoResults';
 
 import useFetchSearchedVideos from '../../hooks/api/useFetchSearchedVideos';
 import useOnScreen from '../../hooks/useOnScreen';
@@ -19,6 +20,8 @@ const Primary = styled.div`
   flex: 1;
   display: flex;
   background: #f9f9f9;
+  min-height: 100vh;
+  justify-content: center;
   margin-left: ${({ sidebarOpen }) => {
     if (sidebarOpen === null) {
       return '0px';
@@ -54,10 +57,31 @@ const SearchPage = ({ initVideosData, sidebarOpen, setSidebarOpen }) => {
       <Container>
         <Sidebar sidebarOpen={sidebarOpen} />
         <Primary sidebarOpen={sidebarOpen}>
-          <VideoCards>
-            {videos.map((video, index) => {
-              const isLastVideo = videos.length === index + 1;
-              if (isLastVideo) {
+          {!initVideosData.initVideos.length ? (
+            <NoResults />
+          ) : (
+            <VideoCards>
+              {videos.map((video, index) => {
+                const isLastVideo = videos.length === index + 1;
+                if (isLastVideo) {
+                  return (
+                    <VideoCard
+                      key={video.id.videoId}
+                      videoId={video.id.videoId}
+                      title={video.snippet.title}
+                      viewCount={video.statistics.viewCount}
+                      videoTimeStamp={video.snippet.publishedAt}
+                      videoDuration={video.contentDetails.duration}
+                      videoThumbnail={video.snippet.thumbnails.medium.url}
+                      channel={video.channelDetails.title}
+                      channelThumbnail={
+                        video.channelDetails.thumbnails.default.url
+                      }
+                      description={video.snippet.description}
+                      setLastVideo={setLastVideo}
+                    />
+                  );
+                }
                 return (
                   <VideoCard
                     key={video.id.videoId}
@@ -72,27 +96,12 @@ const SearchPage = ({ initVideosData, sidebarOpen, setSidebarOpen }) => {
                       video.channelDetails.thumbnails.default.url
                     }
                     description={video.snippet.description}
-                    setLastVideo={setLastVideo}
                   />
                 );
-              }
-              return (
-                <VideoCard
-                  key={video.id.videoId}
-                  videoId={video.id.videoId}
-                  title={video.snippet.title}
-                  viewCount={video.statistics.viewCount}
-                  videoTimeStamp={video.snippet.publishedAt}
-                  videoDuration={video.contentDetails.duration}
-                  videoThumbnail={video.snippet.thumbnails.medium.url}
-                  channel={video.channelDetails.title}
-                  channelThumbnail={video.channelDetails.thumbnails.default.url}
-                  description={video.snippet.description}
-                />
-              );
-            })}
-            {loading && <Loader />}
-          </VideoCards>
+              })}
+              {loading && <Loader />}
+            </VideoCards>
+          )}
         </Primary>
       </Container>
     </>
@@ -111,6 +120,19 @@ export const getServerSideProps = async (context) => {
     regionCode: 'TW',
     maxResults: 12,
   });
+
+  if (!searchedVideosData.data.items.length) {
+    return {
+      props: {
+        initVideosData: {
+          initVideos: [],
+          initNextPageToken: null,
+        },
+      },
+    };
+  }
+
+  // TODO: if no data => redirect to 404 page
 
   const videoIds = searchedVideosData.data.items
     .map((item) => item.id.videoId)

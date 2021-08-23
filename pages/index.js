@@ -92,7 +92,7 @@ const HomePage = ({ sidebarOpen, setSidebarOpen }) => {
               );
             })}
             {loading &&
-              Array(9)
+              Array(16)
                 .fill(null)
                 .map((_, index) => <VideoCardSkeleton key={index} />)}
           </VideoCards>
