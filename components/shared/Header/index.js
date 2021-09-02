@@ -16,9 +16,44 @@ import UserContext from '../../../contexts/userContext';
 
 import * as Styled from './styles';
 
-const Header = ({ loadingPopularVideos, setSidebarOpen }) => {
+const Header = ({ loadingPopularVideos, popularVideos, setSidebarOpen }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useContext(UserContext);
+
+  const renderPopularVideos = () => {
+    if (!popularVideos?.length && loadingPopularVideos) {
+      return Array(4)
+        .fill(null)
+        .map((_, index) => (
+          <div style={{ marginRight: index !== 3 && 8 }} key={index}>
+            <SkeletonsElement type="avatar" width="30px" height="30px" />
+          </div>
+        ));
+    }
+
+    if (!user) {
+      return <Login />;
+    }
+
+    return (
+      <>
+        <Styled.IconLink href="/">
+          <VideoCallIcon />
+        </Styled.IconLink>
+        <Styled.IconLink href="/">
+          <AppsIcon />
+        </Styled.IconLink>
+        <Styled.IconLink href="/">
+          <NotificationsIcon />
+        </Styled.IconLink>
+        <Avatar
+          style={{ height: 30, width: 30, cursor: 'pointer' }}
+          src={user.imageUrl}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        />
+      </>
+    );
+  };
 
   return (
     <Styled.Header>
@@ -40,40 +75,8 @@ const Header = ({ loadingPopularVideos, setSidebarOpen }) => {
         <Searchbox />
       </Styled.SearchboxContainer>
       <Styled.RightHeader>
-        {loadingPopularVideos ? (
-          Array(4)
-            .fill(null)
-            .map((_, index) => (
-              <div style={{ marginRight: index !== 3 && 8 }} key={index}>
-                <SkeletonsElement type="avatar" width="30px" height="30px" />
-              </div>
-            ))
-        ) : (
-          <>
-            {user && (
-              <>
-                <Styled.IconLink href="/">
-                  <VideoCallIcon />
-                </Styled.IconLink>
-                <Styled.IconLink href="/">
-                  <AppsIcon />
-                </Styled.IconLink>
-                <Styled.IconLink href="/">
-                  <NotificationsIcon />
-                </Styled.IconLink>
-                <Avatar
-                  style={{ height: 30, width: 30, cursor: 'pointer' }}
-                  src={user.imageUrl}
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                />
-              </>
-            )}
-            <div style={{ display: user ? 'none' : 'block' }}>
-              <Login />
-            </div>
-            {isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}
-          </>
-        )}
+        {renderPopularVideos()}
+        {isMenuOpen && <Menu setIsMenuOpen={setIsMenuOpen} />}
       </Styled.RightHeader>
     </Styled.Header>
   );

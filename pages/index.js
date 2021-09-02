@@ -50,7 +50,11 @@ const HomePage = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <>
-      <Header loadingPopularVideos={loading} setSidebarOpen={setSidebarOpen} />
+      <Header
+        loadingPopularVideos={loading}
+        popularVideos={videos}
+        setSidebarOpen={setSidebarOpen}
+      />
       <Container>
         <Sidebar sidebarOpen={sidebarOpen} />
         <Primary sidebarOpen={sidebarOpen}>
