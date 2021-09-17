@@ -100,7 +100,7 @@ export const getRecommendVideos = async (videoId, pageToken) => {
     params: {
       part: 'snippet',
       relatedToVideoId: videoId,
-      maxResults: 12,
+      maxResults: 50,
       type: 'video',
       pageToken,
     },
